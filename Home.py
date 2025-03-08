@@ -3,17 +3,14 @@ import google.generativeai as genai
 import pdfplumber
 from fpdf import FPDF
 
-# Configure Gemini API
 genai.configure(api_key="AIzaSyChQymJA8UPXvVqzLx1fo_KN8HzlN-rQ_w")
 model = genai.GenerativeModel('models/gemini-1.5-pro')
 
-# Function to extract text from PDF
 def extract_text_from_pdf(uploaded_file):
     with pdfplumber.open(uploaded_file) as pdf:
         text = "\n".join([page.extract_text() for page in pdf.pages if page.extract_text()])
     return text
 
-# Function to generate and save a PDF
 def generate_pdf(content, filename):
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
@@ -24,11 +21,11 @@ def generate_pdf(content, filename):
     for section in sections:
         if section.strip():
             lines = section.split("\n")
-            if lines[0].strip().isupper():  # Section header
+            if lines[0].strip().isupper(): 
                 pdf.set_font("Arial", 'B', size=14)
                 pdf.cell(0, 10, lines[0], 0, 1, 'L')
                 pdf.set_font("Arial", size=12)
-                pdf.line(10, pdf.get_y(), 200, pdf.get_y())  # Add line separator
+                pdf.line(10, pdf.get_y(), 200, pdf.get_y()) 
                 lines = lines[1:]
             for line in lines:
                 safe_line = line.encode("latin-1", "ignore").decode("latin-1")
@@ -37,7 +34,6 @@ def generate_pdf(content, filename):
     pdf.output(pdf_file_path, "F")
     return pdf_file_path
 
-# Function to generate optimized resume
 def generate_optimized_resume(resume_text, job_description):
     prompt = f"""Optimize the following resume for the given job description:
     \nResume:\n{resume_text}\n\nJob Description:\n{job_description}\n\nOptimized Resume:"""
@@ -47,7 +43,6 @@ def generate_optimized_resume(resume_text, job_description):
     except Exception as e:
         return f"Error generating resume: {e}"
 
-# Background Image CSS
 page_bg_img = f"""
 <style>
 [data-testid="stAppViewContainer"] > .main {{
@@ -61,7 +56,6 @@ background-attachment: local;
 
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
-# Title with Deep Blue Color
 st.markdown(
     """
     <style>
@@ -75,7 +69,6 @@ st.markdown(
 
 st.markdown("<h1 class='title'>Job-Swift AI - SIGMA</h1>", unsafe_allow_html=True)
 
-# Resume Optimization Section (Link to Page)
 st.header("Resume Optimization")
 if st.button("Go to Resume Optimizer"):
     st.markdown(
@@ -85,7 +78,6 @@ if st.button("Go to Resume Optimizer"):
         unsafe_allow_html=True,
     )
 
-# Job Suggestions Redirect
 st.header("Job Suggestions with your skill set")
 if st.button("Go to Job Suggestions"):
     st.markdown(
@@ -95,7 +87,6 @@ if st.button("Go to Job Suggestions"):
         unsafe_allow_html=True,
     )
 
-# Mock Interview
 st.header("Mock Interview")
 if st.button("Go to Mock Interview"):
     st.markdown(
@@ -105,7 +96,6 @@ if st.button("Go to Mock Interview"):
         unsafe_allow_html=True,
     )
 
-# Cover Letter Generation
 st.header("Cover Letter Generation")
 if st.button("Go to Cover Letter Generator"):
     st.markdown(
@@ -115,7 +105,7 @@ if st.button("Go to Cover Letter Generator"):
         unsafe_allow_html=True,
     )
 
-# Networking Email Generator
+
 st.header("Networking Email Generator")
 if st.button("Show Networking Email Generator"):
     st.header("📧 Networking Email Generator")
