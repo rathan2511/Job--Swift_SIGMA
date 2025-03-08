@@ -1,19 +1,15 @@
 import streamlit as st
 import google.generativeai as genai
 
-# Configure Gemini API
 genai.configure(api_key="AIzaSyChQymJA8UPXvVqzLx1fo_KN8HzlN-rQ_w")  # Replace with your actual API key
 model = genai.GenerativeModel('models/gemini-1.5-pro')
 
-# Streamlit UI
 st.set_page_config(page_title="Mock Interview System", layout="wide")
 st.title("🎤 AI-Powered Mock Interview")
 
-# Input: Job Role & Number of Questions
 job_role = st.text_input("Enter the job role for the interview:")
 num_questions = st.selectbox("Select the number of questions:", [1, 3, 5, 7, 10], index=2)
 
-# Generate Questions
 if st.button("Start Interview"):
     if job_role:
         prompt_interview = (
@@ -44,7 +40,6 @@ if st.button("Start Interview"):
     else:
         st.warning("⚠ Please enter a job role to start the mock interview.")
 
-# Display One Question at a Time
 if "questions" in st.session_state and st.session_state["current_question"] < len(st.session_state["questions"]):
     idx = st.session_state["current_question"]
     question = st.session_state["questions"][idx]
@@ -54,11 +49,9 @@ if "questions" in st.session_state and st.session_state["current_question"] < le
 
     user_response = st.text_area("Your Answer", value=st.session_state["answers"][idx], key=f"answer_{idx}")
 
-    # Submit Answer Button
     if st.button("Submit Answer", key=f"submit_{idx}"):
         st.session_state["answers"][idx] = user_response
 
-        # Generate feedback for the answer
         feedback_prompt = (
             f"Evaluate this interview response based on the following criteria:\n"
             f"- Clarity of response\n"
@@ -80,11 +73,11 @@ if "questions" in st.session_state and st.session_state["current_question"] < le
             st.session_state["feedback"][idx] = f"Error generating feedback: {e}"
 
         st.session_state["current_question"] += 1
-        st.rerun()  # Forces UI update for the next question
+        st.rerun()  
 
-# Display AI Feedback for Each Answer
+
 if "feedback" in st.session_state and st.session_state["current_question"] > 0:
-    idx = st.session_state["current_question"] - 1  # Previous question
+    idx = st.session_state["current_question"] - 1  
     question = st.session_state["questions"][idx]
     user_response = st.session_state["answers"][idx]
     feedback = st.session_state["feedback"][idx]
@@ -92,7 +85,7 @@ if "feedback" in st.session_state and st.session_state["current_question"] > 0:
     st.write("### 📌 AI Feedback")
     st.write(feedback)
 
-# Generate Overall Feedback After Interview Completion
+
 if "current_question" in st.session_state and st.session_state["current_question"] >= len(st.session_state["questions"]):
     st.success("🎉 Mock interview completed! Reviewing overall performance...")
 
