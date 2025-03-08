@@ -4,7 +4,7 @@ import pdfplumber
 from fpdf import FPDF
 
 # Configure Gemini API
-genai.configure(api_key="AIzaSyD1H-_G1QINMtBOEd1dqqrzU9BBu6AJlbI")  # Replace with actual API key
+genai.configure(api_key="AIzaSyChQymJA8UPXvVqzLx1fo_KN8HzlN-rQ_w")  # Replace with actual API key
 model = genai.GenerativeModel('models/gemini-1.5-pro')
 
 # Function to extract text from PDF
