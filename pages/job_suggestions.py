@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 
 # Configure Gemini API
-genai.configure(api_key="AIzaSyBL16j3Opn57dHXSVgtv9K0ioW8h-zF8nc")  # Replace with your API key
+genai.configure(api_key="AIzaSyChQymJA8UPXvVqzLx1fo_KN8HzlN-rQ_w")  # Replace with your API key
 model = genai.GenerativeModel('models/gemini-1.5-pro')
 
 # Function to extract text from PDF
