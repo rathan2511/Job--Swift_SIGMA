@@ -3,17 +3,14 @@ import google.generativeai as genai
 import pdfplumber
 from fpdf import FPDF
 
-# Configure Gemini API
 genai.configure(api_key="AIzaSyChQymJA8UPXvVqzLx1fo_KN8HzlN-rQ_w")  # Replace with actual API key
 model = genai.GenerativeModel('models/gemini-1.5-pro')
 
-# Function to extract text from PDF
 def extract_text_from_pdf(uploaded_file):
     with pdfplumber.open(uploaded_file) as pdf:
         text = "\n".join([page.extract_text() for page in pdf.pages if page.extract_text()])
     return text
 
-# Function to generate and save a PDF
 def generate_pdf(content, filename):
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
@@ -24,11 +21,11 @@ def generate_pdf(content, filename):
     for section in sections:
         if section.strip():
             lines = section.split("\n")
-            if lines[0].strip().isupper():  # Section header
+            if lines[0].strip().isupper():  
                 pdf.set_font("Arial", 'B', size=14)
                 pdf.cell(0, 10, lines[0], 0, 1, 'L')
                 pdf.set_font("Arial", size=12)
-                pdf.line(10, pdf.get_y(), 200, pdf.get_y())  # Add line separator
+                pdf.line(10, pdf.get_y(), 200, pdf.get_y())  
                 lines = lines[1:]
             for line in lines:
                 safe_line = line.encode("latin-1", "ignore").decode("latin-1")
@@ -37,7 +34,6 @@ def generate_pdf(content, filename):
     pdf.output(pdf_file_path, "F")
     return pdf_file_path
 
-# Function to generate optimized resume
 def generate_optimized_resume(resume_text, job_description):
     prompt = f"""Optimize the following resume for the given job description:
     \nResume:\n{resume_text}\n\nJob Description:\n{job_description}\n\nOptimized Resume:"""
@@ -47,7 +43,6 @@ def generate_optimized_resume(resume_text, job_description):
     except Exception as e:
         return f"Error generating resume: {e}"
 
-# Streamlit UI with enhanced styling
 st.set_page_config(page_title="📄 AI Resume Optimizer", layout="centered")
 st.markdown("""
     <style>
@@ -70,11 +65,9 @@ st.markdown("""
 st.title("🚀 AI-Powered Resume Optimizer")
 st.write("Enhance your resume to match the job description and improve your chances!")
 
-# Upload Resume
 uploaded_resume = st.file_uploader("📂 Upload your resume (PDF format)", type=["pdf"])
 job_description = st.text_area("📝 Enter the job description for optimization:", height=150)
 
-# Generate Optimized Resume
 if st.button("🔍 Optimize Resume"):
     if uploaded_resume and job_description:
         with st.spinner("Extracting text from resume..."):
