@@ -4,16 +4,16 @@ from fpdf import FPDF
 import datetime
 import re
 
-# Configure Gemini API
+
 genai.configure(api_key="AIzaSyChQymJA8UPXvVqzLx1fo_KN8HzlN-rQ_w")  # Replace with your API key
 model = genai.GenerativeModel('models/gemini-1.5-pro')
 
-# Function to clean AI-generated cover letter
+
 def clean_cover_letter(text, your_name):
     """Removes redundant occurrences of name, date, and closing signature."""
-    text = re.sub(rf"{your_name}.*", "", text, flags=re.IGNORECASE)  # Remove name repetition
-    text = re.sub(r"Date:.*\n?", "", text, flags=re.IGNORECASE)  # Remove date duplication
-    text = re.sub(r"(Sincerely,|Best regards,|Yours truly,|Regards,)\n?.*", "", text, flags=re.IGNORECASE)  # Remove closing
+    text = re.sub(rf"{your_name}.*", "", text, flags=re.IGNORECASE)  
+    text = re.sub(r"Date:.*\n?", "", text, flags=re.IGNORECASE)  
+    text = re.sub(r"(Sincerely,|Best regards,|Yours truly,|Regards,)\n?.*", "", text, flags=re.IGNORECASE)  
     return text.strip()
 
 # Function to generate AI-powered Cover Letter
