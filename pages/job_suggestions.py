@@ -4,17 +4,17 @@ import pdfplumber
 import requests
 from bs4 import BeautifulSoup
 
-# Configure Gemini API
+
 genai.configure(api_key="AIzaSyChQymJA8UPXvVqzLx1fo_KN8HzlN-rQ_w")  # Replace with your API key
 model = genai.GenerativeModel('models/gemini-1.5-pro')
 
-# Function to extract text from PDF
+
 def extract_text_from_pdf(uploaded_file):
     with pdfplumber.open(uploaded_file) as pdf:
         text = "\n".join([page.extract_text() for page in pdf.pages if page.extract_text()])
     return text
 
-# Function to find company websites
+
 def find_company_website(company_name):
     try:
         search_query = f"company website {company_name}"
@@ -23,7 +23,7 @@ def find_company_website(company_name):
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         }
         response = requests.get(search_url, headers=headers)
-        response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
+        response.raise_for_status()  
 
         soup = BeautifulSoup(response.text, 'html.parser')
         link = soup.find('a')
@@ -56,7 +56,6 @@ if st.button("Generate Job Suggestions"):
 
             for job in job_suggestions_list:
                 if job.strip():
-                    # Extract company name (assuming it's in the job suggestion)
                     parts = job.split("at")
                     company_name = parts[1].strip() if len(parts) > 1 else None
 
