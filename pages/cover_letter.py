@@ -16,54 +16,45 @@ def clean_cover_letter(text, your_name):
     text = re.sub(r"(Sincerely,|Best regards,|Yours truly,|Regards,)\n?.*", "", text, flags=re.IGNORECASE)  
     return text.strip()
 
-# Function to generate AI-powered Cover Letter
 def generate_cover_letter(your_name, job_description, company_name):
     prompt = f"Generate a professional cover letter.\nYour Name: {your_name}\nJob Description:\n{job_description}\nCompany Name: {company_name}\n\nCover Letter:"
     try:
         response = model.generate_content(prompt)
-        return clean_cover_letter(response.text, your_name)  # Clean before returning
+        return clean_cover_letter(response.text, your_name) 
     except Exception as e:
         return f"Error: {e}"
 
-# Function to generate PDF in a professional format
 def create_cover_letter_pdf(your_name, company_name, cover_letter_text):
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
 
-    # Add header
     pdf.set_font("Arial", "B", 14)
     pdf.cell(200, 10, your_name, ln=True, align="C")
     pdf.set_font("Arial", "", 12)
     pdf.cell(200, 10, "Email: example@example.com | Phone: +1234567890", ln=True, align="C")
-    pdf.cell(200, 10, "", ln=True)  # Add space
+    pdf.cell(200, 10, "", ln=True) 
 
-    # Add date
     pdf.cell(200, 10, f"Date: {datetime.datetime.today().strftime('%B %d, %Y')}", ln=True)
 
-    # Add recipient & company
     pdf.set_font("Arial", "B", 12)
     pdf.cell(200, 10, f"To: Hiring Manager, {company_name}", ln=True)
     pdf.set_font("Arial", "", 12)
-    pdf.cell(200, 10, "", ln=True)  # Add space
+    pdf.cell(200, 10, "", ln=True)
 
-    # Cover Letter Content
     pdf.set_font("Arial", "", 12)
-    sections = cover_letter_text.split("\n\n")  # Split paragraphs
+    sections = cover_letter_text.split("\n\n") 
     for section in sections:
         pdf.multi_cell(0, 8, section)
-        pdf.cell(200, 5, "", ln=True)  # Add spacing
+        pdf.cell(200, 5, "", ln=True)
 
-    # Add closing
     pdf.cell(200, 10, "Sincerely,", ln=True)
     pdf.cell(200, 10, your_name, ln=True)
 
-    # Save file
     pdf_file_path = "./Cover_Letter.pdf"
     pdf.output(pdf_file_path, "F")
     return pdf_file_path
 
-# Streamlit UI
 st.set_page_config(page_title="AI-Powered Cover Letter Generator", layout="wide")
 st.title("📩 AI-Powered Cover Letter Generator")
 
